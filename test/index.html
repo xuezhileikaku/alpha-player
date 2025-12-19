@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Test - AlphaVideoKit</title>
+    <style>
+        body { background: #222; color: white; text-align: center; }
+        canvas { background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%); background-size: 20px 20px; }
+    </style>
+</head>
+<body>
+    <h1>原生 HTML + TS 包测试</h1>
+    <video id="v" src="../assets/alpha.mp4" style="display:none" muted loop playsinline></video>
+    <canvas id="c"></canvas>
+
+    <script type="module">
+        // 这里的路径指向你编译出来的 dist 文件
+        import { AlphaVideoEngine } from '../dist/AlphaVideoEngine.js';
+
+        const v = document.getElementById('v');
+        const c = document.getElementById('c');
+
+        const engine = new AlphaVideoEngine({
+            canvas: c,
+            video: v,
+            mode: 'horizontal',
+            alphaPosition: 'left' // 根据你的视频源调整
+        });
+
+        v.play().then(() => engine.start());
+    </script>
+</body>
+</html>

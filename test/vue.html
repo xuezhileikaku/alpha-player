@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue Test - AlphaVideoKit</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        canvas { background: #444; border: 2px solid #007bff; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Vue 3 集成测试</h1>
+        <video ref="videoRef" src="../assets/dual_channel_output1.mp4" style="display:none" muted loop playsinline></video>
+        <canvas ref="canvasRef"></canvas>
+    </div>
+
+    <script type="module">
+        import { AlphaVideoEngine } from '../dist/AlphaVideoEngine.js';
+        const { createApp, onMounted, ref } = Vue;
+
+        createApp({
+            setup() {
+                const videoRef = ref(null);
+                const canvasRef = ref(null);
+
+                onMounted(() => {
+                    // 初始化高性能 WebGL 引擎
+                    const engine = new AlphaVideoEngine({
+                        canvas: canvasRef.value,
+                        video: videoRef.value,
+                        mode: 'horizontal',
+                        alphaPosition: 'right'
+                    });
+
+                    videoRef.value.play().then(() => engine.start());
+                });
+
+                return { videoRef, canvasRef };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
